@@ -1,41 +1,82 @@
 <script lang="ts">
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-  import { onMount } from 'svelte';
+  import { onMount } from "svelte";
 
   gsap.registerPlugin(ScrollTrigger);
 
   let video;
-  let scale = 1;
 
   onMount(() => {
+    gsap.to("#title", {
+      opacity: 0,
+      scale: 0.5,
+      duration: 1.2,
+      scrollTrigger: {
+        trigger: "#section1",
+        start: "70% center",
+        scrub: true,
+      },
+    });
+
+    gsap.to("#title2", {
+      opacity: 1,
+      scrollTrigger: {
+        trigger: "#section1",
+        start: "520% center ",
+        scrub: true,
+      },
+    });
+
     ScrollTrigger.create({
-      trigger: '#section1',
-      end: '500%',
+      trigger: "#section1",
+      end: "500%",
       pin: true,
-      markers: true,
       onUpdate: ({ progress }) => {
-        scale = progress.toFixed(3) * 10;
         video.currentTime = progress * 9;
       },
     });
   });
 </script>
 
-<section
-  id="section1"
-  class="h-screen  border-b-4 border-purple-300 grid place-items-center relative"
->
+<section id="section1" class="relative grid h-screen place-items-center ">
+  <header
+    class="absolute top-0 flex w-full items-center justify-between border-b  border-gray-500 p-4 md:w-[80vw]"
+  >
+    <figure class="w-8">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/3/31/Apple_logo_white.svg"
+        class="w-full"
+      />
+    </figure>
+    <nav class="flex items-center gap-4">
+      <a href="">Home</a>
+      <a href="">Products</a>
+      <a href="">Contact</a>
+    </nav>
+  </header>
+  <h2
+    id="title"
+    class="absolute left-[25%] right-[25%] top-[50%] block  text-center text-9xl font-bold"
+  >
+    BatteryPro
+  </h2>
   <video
     bind:this={video}
     src="/video-scroll.mp4"
-    class="w-full h-full object-cover"
+    class="h-full w-full object-cover"
   />
-  <div class="absolute top-0 left-0 box w-10 h-10 bg-blue-500" style:scale />
+  <h2
+    id="title2"
+    style:opacity={0}
+    class="absolute left-[25%] right-[25%] top-[50%] block text-center  text-7xl font-bold "
+  >
+    Don't worry about him
+  </h2>
 </section>
 
-<section id="section2" class=" bg-red-500 h-screen grid place-items-center" />
+<section id="section2" class=" grid h-screen place-items-center bg-red-500" />
 
 <style>
 </style>
